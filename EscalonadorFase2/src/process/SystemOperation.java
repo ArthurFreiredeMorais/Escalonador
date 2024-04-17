@@ -1,0 +1,48 @@
+package process;
+
+import java.util.List;
+import memory.MemoryManager;
+import scheduler.Priority;
+import scheduler.SJF;
+import scheduler.FCFS;
+import scheduler.Lottery;
+import scheduler.Scheduler;
+
+public class SystemOperation {
+    public static MemoryManager memoryManager = new MemoryManager();
+    public static Scheduler scheduler = new Priority();
+    
+    public static SOProcess systemCall(int size, int priority, int timeToExecute) {
+    	return new SOProcess(size, priority, timeToExecute);
+    }
+
+    public static List<SubProcess> systemCall(SystemCallType typeCall, SOProcess process) {
+        if (typeCall == SystemCallType.WRITE && process != null) {
+            boolean checkWrite = memoryManager.checkWrite(process);
+
+            if (checkWrite) {
+                memoryManager.write(process);
+                scheduler.addProcess(process);
+            } else {
+            	System.out.println(" ");
+                System.out.println("!!!!!!!!!!!!!!!   P A GE  F A U L T   !!!!!!!!!!!!!!!");
+                System.out.println(" ");
+            }
+        }
+
+        if (typeCall == SystemCallType.READ && process != null) {
+            return memoryManager.read(process);
+        }
+
+        if (typeCall == SystemCallType.DELETE && process != null) {
+            scheduler.close(process);
+            memoryManager.delete(process);
+        }
+
+        if (typeCall == SystemCallType.STOP && process != null) {
+            scheduler.close(process);
+        }
+
+        return null;
+    }
+}
