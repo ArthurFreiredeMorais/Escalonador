@@ -2,11 +2,11 @@ package process;
 
 import java.util.List;
 import memory.MemoryManager;
-import scheduler.Priority;
-import scheduler.SJF;
-import scheduler.FCFS;
-import scheduler.Lottery;
 import scheduler.Scheduler;
+import strategies.FCFS;
+import strategies.Lottery;
+import strategies.Priority;
+import strategies.SJF;
 
 public class SystemOperation {
     public static MemoryManager memoryManager = new MemoryManager();
@@ -22,7 +22,7 @@ public class SystemOperation {
 
             if (checkWrite) {
                 memoryManager.write(process);
-                scheduler.addProcess(process);
+                scheduler.addSOProcess(process);
             } else {
             	System.out.println(" ");
                 System.out.println("!!!!!!!!!!!!!!!   P A GE  F A U L T   !!!!!!!!!!!!!!!");
