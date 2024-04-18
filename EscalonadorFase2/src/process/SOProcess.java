@@ -33,7 +33,7 @@ public class SOProcess {
 
     private void insertSubProcess() {
         for (int i = 0; i < this.size; i++) {
-            this.subProcess.add(this.id + " - SP" + i);
+            this.subProcess.add(this.id + "" + i);
         }
     }
 
@@ -42,7 +42,7 @@ public class SOProcess {
         	System.out.println(" ");
             System.out.println("##############################################################");
             System.out.println(" ");
-            System.out.println("PROCESS " + this.id + " DONE");
+            System.out.println("PROCESS " + this.id + " IS DONE");
             System.out.println(" ");
             System.out.println("##############################################################");
             System.out.println(" ");
