@@ -57,8 +57,6 @@ public class CpuManager {
 
         if (data != null) {
         	System.out.println(" ");
-            System.out.println("##############################################");
-            System.out.println(" ");
         }
     }
 }
