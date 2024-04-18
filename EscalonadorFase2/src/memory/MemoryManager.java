@@ -13,15 +13,15 @@ public class MemoryManager {
     public List<SubProcess[]> physicMemory;
     private Map<String, MemoryAddress> logicMemory;
 
-    public static final int PAGE_SIZE = 4;
-    public static final int MEMORY_SIZE = 256;
+    public static final int pageSize = 4;
+    public static final int memorySize = 256;
 
     public MemoryManager() {
-        int quantityPages = MEMORY_SIZE / PAGE_SIZE;
+        int quantityPages = memorySize / pageSize;
 
         physicMemory = new ArrayList<>(quantityPages);
         for (int frame = 0; frame < quantityPages; frame++) {
-            physicMemory.add(new SubProcess[PAGE_SIZE]);
+            physicMemory.add(new SubProcess[pageSize]);
         }
 
         logicMemory = new HashMap<>();
@@ -41,15 +41,6 @@ public class MemoryManager {
         return subProcesses;
     }
 
-    public void write(SOProcess process) {
-    	writeProcessWithPaging(process);
-    }
-
-    public boolean checkWrite(SOProcess process) {
-        List<Integer> emptyFrames = findEmptyPages();
-        return emptyFrames.size() >= (double)process.getSize() / PAGE_SIZE;
-    }
-
     private List<Integer> findEmptyPages() {
         List<Integer> framesIndex = new ArrayList<>();
 
@@ -63,8 +54,13 @@ public class MemoryManager {
 
         return framesIndex;
     }
+    
+    public boolean checkWrite(SOProcess process) {
+        List<Integer> emptyFrames = findEmptyPages();
+        return emptyFrames.size() >= (double)process.getSize() / pageSize;
+    }
 
-    private void writeProcessWithPaging(SOProcess process) {
+    private void writeWithPaging(SOProcess process) {
         List<Integer> emptyFrames = findEmptyPages();
 
         int countSize = 0;
@@ -85,6 +81,10 @@ public class MemoryManager {
         }
 
         printMemory();
+    }
+    
+    public void write(SOProcess process) {
+    	writeWithPaging(process);
     }
 
     public SOProcess delete(SOProcess process) {
@@ -110,11 +110,9 @@ public class MemoryManager {
     private void printMemory() {
         System.out.println("#################################################################");
         System.out.println(" ");
-        System.out.println("************************* C H E C K   M E M O R Y **************************");
-        System.out.println(" ");
         for (SubProcess[] page : physicMemory) {
             for (SubProcess subProcess : page) {
-                System.out.print("| ID : " + (subProcess != null ? subProcess.getId() : null) + " | ");
+                System.out.print("| " + (subProcess != null ? subProcess.getId() : null) + " | ");
             }
             System.out.println();
         }
