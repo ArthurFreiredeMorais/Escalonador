@@ -4,22 +4,13 @@ import process.SubProcess;
 
 public class Core {
 	private int id;
-	private int numberOfInstructionsByClock;
+	private int numberOfInstructionsPerClock;
 	private SubProcess subProcess;
 
-	public Core(int id, int numberOfInstructionsByClock) {
+	public Core(int id, int numberOfInstructionsPerClock) {
 		this.id = id;
-		this.numberOfInstructionsByClock = numberOfInstructionsByClock;
+		this.numberOfInstructionsPerClock = numberOfInstructionsPerClock;
 		this.subProcess = null;
-	}
-
-	public void run() {
-		if (this.subProcess != null) {
-			System.out.println(" ");
-			System.out.print("CPU - CORE " + this.id + " : ");
-			System.out.println(" " + this.subProcess.getId());
-			finish();
-		}
 	}
 
 	private void finish() {
@@ -28,6 +19,13 @@ public class Core {
 			this.subProcess.getProcess().setInstructionsExecuted(this.subProcess.getInstructions());
 			this.subProcess.getProcess().checkIfSubProcessIsDone();
 			this.subProcess = null;
+		}
+	}
+	
+	public void run() {
+		if (this.subProcess != null) {
+			System.out.println(" " + this.subProcess.getId());
+			finish();
 		}
 	}
 
